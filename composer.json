@@ -22,6 +22,11 @@
         "phpunit/phpunit": "^5.0"
     },
     "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Icicle\\Log\\": "src"
