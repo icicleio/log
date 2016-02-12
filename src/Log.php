@@ -18,14 +18,14 @@ interface Log
      * @coroutine
      *
      * @param int $level Log level. Data will only be written to the log if the current log level includes $level.
-     * @param string $data String data to write to the log.
-     * @param int|null $time Optional unix timestamp. If none is given, the current time is used.
+     * @param string $format Data to write to the log. Use formatting like printf with the optional ...$args params.
+     * @param mixed ...$args Optional arguments used with the $format argument.
      *
      * @return \Generator
      *
-     * @resolve bool Always true.
+     * @resolve bool Always true so calls to this method can be wrapped with assert() if desired.
      */
-    public function log($level, $data, $time = null);
+    public function log($level, $format /* , ...$args */);
 
     /**
      * @return int Log level.
