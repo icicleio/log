@@ -15,12 +15,13 @@
         }
     ],
     "require": {
-        "icicleio/icicle": "^0.9",
-        "icicleio/stream": "^0.5"
+        "icicleio/icicle": "^2.0",
+        "icicleio/stream": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.8"
+        "phpunit/phpunit": "^5.0"
     },
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Icicle\\Log\\": "src"

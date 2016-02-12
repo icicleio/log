@@ -25,10 +25,10 @@ interface Log
      *
      * @resolve bool Always true.
      */
-    public function log($level, $data, $time = null);
+    public function log(int $level, string $data, int $time = null): \Generator;
 
     /**
      * @return int Log level.
      */
-    public function getLevel();
+    public function getLevel(): int;
 }

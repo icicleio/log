@@ -20,7 +20,7 @@ class ConsoleLog extends StreamLog
      * @param int $level
      * @param \DateTimeZone|null $timezone
      */
-    public function __construct(WritableStream $stream = null, $level = Log::ALL, \DateTimeZone $timezone = null)
+    public function __construct(WritableStream $stream = null, int $level = Log::ALL, \DateTimeZone $timezone = null)
     {
         parent::__construct($stream ?: Stream\stderr(), $level, $timezone);
     }
@@ -28,7 +28,7 @@ class ConsoleLog extends StreamLog
     /**
      * {@inheritdoc}
      */
-    protected function format($level, $data, \DateTimeImmutable $time)
+    protected function format(int $level, string $data, \DateTimeImmutable $time): string
     {
         return sprintf(
             "\e[%dm[%s @ %s]\e[0m %s\n",
@@ -44,7 +44,7 @@ class ConsoleLog extends StreamLog
      *
      * @return int
      */
-    private function getColorValue($level)
+    private function getColorValue(int $level): int
     {
         switch ($level) {
             case Log::DEBUG:     return self::PURPLE;

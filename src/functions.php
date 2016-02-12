@@ -7,7 +7,7 @@ if (!\function_exists(__NAMESPACE__ . '\log')) {
      *
      * @return \Icicle\Log\Log
      */
-    function log(Log $log = null)
+    function log(Log $log = null): Log
     {
         static $instance;
 
@@ -27,7 +27,7 @@ if (!\function_exists(__NAMESPACE__ . '\log')) {
      *
      * @return string
      */
-    function label($level)
+    function label(int $level): string
     {
         switch ($level) {
             case Log::DEBUG:     return 'Debug';

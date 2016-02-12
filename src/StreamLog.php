@@ -25,37 +25,35 @@ class StreamLog implements Log
      * @param int $level
      * @param \DateTimeZone|null $timezone
      */
-    public function __construct(WritableStream $stream, $level = Log::ALL, \DateTimeZone $timezone = null)
+    public function __construct(WritableStream $stream, int $level = Log::ALL, \DateTimeZone $timezone = null)
     {
         $this->stream = $stream;
-        $this->level = (int) $level;
+        $this->level = $level;
         $this->timezone = $timezone ?: new \DateTimeZone(date_default_timezone_get() ?: 'UTC');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function log($level, $data, $time = null)
+    public function log(int $level, string $data, int $time = null): \Generator
     {
-        $level = (int) $level;
-
         $date = new \DateTimeImmutable('now', $this->timezone);
 
         if (null !== $time) {
-            $date = $date->setTimestamp((int) $time);
+            $date = $date->setTimestamp($time);
         }
 
         if ($this->level & $level) {
-            yield $this->stream->write($this->format($level, $data, $date));
+            yield from $this->stream->write($this->format($level, $data, $date));
         }
 
-        yield true;
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
@@ -67,7 +65,7 @@ class StreamLog implements Log
      *
      * @return string
      */
-    protected function format($level, $data, \DateTimeImmutable $time)
+    protected function format(int $level, string $data, \DateTimeImmutable $time): string
     {
         return sprintf("[%s @ %s] %s\n", label($level), $time->format('Y/m/d H:i:s'), $data);
     }

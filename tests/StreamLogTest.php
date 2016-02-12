@@ -57,7 +57,7 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
             ->method('write')
             ->will($this->returnCallback(function ($string) use ($expected) {
                 $this->assertSame($expected, $string);
-                yield strlen($string);
+                return yield strlen($string);
             }));
 
         $coroutine = new Coroutine($log->log($level, $data));
@@ -100,7 +100,7 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
             ->method('write')
             ->will($this->returnCallback(function ($string) use ($expected) {
                 $this->assertSame($expected, $string);
-                yield strlen($string);
+                return yield strlen($string);
             }));
 
         $coroutine = new Coroutine($log->log($level, $data, $date->getTimestamp()));
