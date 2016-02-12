@@ -1,0 +1,37 @@
+{
+    "name": "icicleio/log",
+    "description": "Asynchronous logging interface for Icicle.",
+    "keywords": [
+        "log",
+        "asynchronous",
+        "async"
+    ],
+    "homepage": "http://icicle.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Aaron Piotrowski",
+            "email": "aaron@icicle.io"
+        }
+    ],
+    "require": {
+        "icicleio/icicle": "^0.9",
+        "icicleio/stream": "^0.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "Icicle\\Log\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Icicle\\Tests\\Log\\": "tests"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    }
+}
