@@ -25,7 +25,7 @@ class StreamLog implements Log
      * @param int $level
      * @param \DateTimeZone|null $timezone
      */
-    public function __construct(WritableStream $stream, $level = Log::NORMAL, \DateTimeZone $timezone = null)
+    public function __construct(WritableStream $stream, $level = Log::ALL, \DateTimeZone $timezone = null)
     {
         $this->stream = $stream;
         $this->level = (int) $level;
@@ -47,10 +47,9 @@ class StreamLog implements Log
 
         if ($this->level & $level) {
             yield $this->stream->write($this->format($level, $data, $date));
-            return;
         }
 
-        yield 0;
+        yield true;
     }
 
     /**

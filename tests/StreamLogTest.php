@@ -29,6 +29,15 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
+    public function testGetLevel()
+    {
+        $level = Log::ERROR | Log::WARNING;
+
+        $log = new StreamLog($this->stream, $level);
+
+        $this->assertSame($level, $log->getLevel());
+    }
+
     /**
      * @dataProvider getExpected
      *
@@ -38,9 +47,11 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
      */
     public function testLog($level, $data, $expected)
     {
-        $expected = sprintf($expected, gmdate('Y/m/d H:i:s'));
+        $timezone = new \DateTimeZone('UTC');
 
-        $log = new StreamLog($this->stream, Log::ALL);
+        $expected = sprintf($expected, (new \DateTime('now', $timezone))->format('Y/m/d H:i:s'));
+
+        $log = new StreamLog($this->stream, Log::ALL, $timezone);
 
         $this->stream->expects($this->once())
             ->method('write')
@@ -50,6 +61,49 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
             }));
 
         $coroutine = new Coroutine($log->log($level, $data));
-        $this->assertSame(strlen($expected), $coroutine->wait());
+        $this->assertTrue($coroutine->wait());
+    }
+
+    /**
+     * @depends testLog
+     */
+    public function testLogWithUnloggedLevel()
+    {
+        $log = new StreamLog($this->stream, Log::ALL & ~Log::DEBUG);
+
+        $this->stream->expects($this->never())
+            ->method('write');
+
+        $coroutine = new Coroutine($log->log(Log::DEBUG, 'Test log message'));
+        $this->assertTrue($coroutine->wait());
+    }
+
+    /**
+     * @depends testLog
+     * @dataProvider getExpected
+     *
+     * @param int $level
+     * @param string $data
+     * @param string $expected
+     */
+    public function testLogWithTimestamp($level, $data, $expected)
+    {
+        $timezone = new \DateTimeZone('UTC');
+
+        $date = new \DateTime('yesterday 15:34:28', $timezone);
+
+        $expected = sprintf($expected, $date->format('Y/m/d H:i:s'));
+
+        $log = new StreamLog($this->stream, Log::ALL, $timezone);
+
+        $this->stream->expects($this->once())
+            ->method('write')
+            ->will($this->returnCallback(function ($string) use ($expected) {
+                $this->assertSame($expected, $string);
+                yield strlen($string);
+            }));
+
+        $coroutine = new Coroutine($log->log($level, $data, $date->getTimestamp()));
+        $this->assertTrue($coroutine->wait());
     }
 }

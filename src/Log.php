@@ -13,7 +13,6 @@ interface Log
     const EMERGENCY = 0x80;
 
     const ALL       = -1;
-    const NORMAL    = 0xfc;
 
     /**
      * @coroutine
@@ -24,7 +23,7 @@ interface Log
      *
      * @return \Generator
      *
-     * @resolve int Number of bytes written to the log. May return 0 if $level is not included in the log level.
+     * @resolve bool Always true.
      */
     public function log($level, $data, $time = null);
 

@@ -2,6 +2,7 @@
 namespace Icicle\Log;
 
 use Icicle\Stream;
+use Icicle\Stream\WritableStream;
 
 class ConsoleLog extends StreamLog
 {
@@ -15,12 +16,13 @@ class ConsoleLog extends StreamLog
     const WHITE  = 37;
 
     /**
+     * @param \Icicle\Stream\WritableStream $stream
      * @param int $level
      * @param \DateTimeZone|null $timezone
      */
-    public function __construct($level = Log::NORMAL, \DateTimeZone $timezone = null)
+    public function __construct(WritableStream $stream = null, $level = Log::ALL, \DateTimeZone $timezone = null)
     {
-        parent::__construct(Stream\stderr(), $level, $timezone);
+        parent::__construct($stream ?: Stream\stderr(), $level, $timezone);
     }
 
     /**
@@ -54,7 +56,7 @@ class ConsoleLog extends StreamLog
             case Log::ALERT:     return self::RED;
             case Log::EMERGENCY: return self::RED;
 
-            default: return self::WHITE;
+            default: return self::BLACK;
         }
     }
 }
