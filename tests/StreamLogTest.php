@@ -18,14 +18,14 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
     public function getExpected()
     {
         return [
-            [Log::DEBUG, 'Debug log data', "[Debug @ %s] Debug log data\n"],
-            [Log::INFO, 'Info log data', "[Info @ %s] Info log data\n"],
-            [Log::NOTICE, 'Notice log data', "[Notice @ %s] Notice log data\n"],
-            [Log::WARNING, 'Warning log data', "[Warning @ %s] Warning log data\n"],
-            [Log::ERROR, 'Error log data', "[Error @ %s] Error log data\n"],
-            [Log::CRITICAL, 'Critical log data', "[Critical @ %s] Critical log data\n"],
-            [Log::ALERT, 'Alert log data', "[Alert @ %s] Alert log data\n"],
-            [Log::EMERGENCY, 'Emergency log data', "[Emergency @ %s] Emergency log data\n"],
+            ["[Debug @ %s] Debug log data 1\n", Log::DEBUG, 'Debug log data %d', 1],
+            ["[Info @ %s] Info log data 4 string\n", Log::INFO, 'Info log data %d %s', 4, 'string'],
+            ["[Notice @ %s] Notice log data 0x34\n", Log::NOTICE, 'Notice log data 0x%x', 0x34],
+            ["[Warning @ %s] Warning log data\n", Log::WARNING, 'Warning log data'],
+            ["[Error @ %s] Error log data 123\n", Log::ERROR, 'Error log data %d', 123],
+            ["[Critical @ %s] Critical log data\n", Log::CRITICAL, 'Critical log data'],
+            ["[Alert @ %s] Alert log data 1 2 3 4\n", Log::ALERT, 'Alert log data %d %d %d %d', 1, 2, 3, 4],
+            ["[Emergency @ %s] Emergency log data\n", Log::EMERGENCY, 'Emergency log data'],
         ];
     }
 
@@ -42,13 +42,13 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
      * @dataProvider getExpected
      *
      * @param int $level
-     * @param string $data
      * @param string $expected
+     * @param string $format
+     * @param mixed ...$args
      */
-    public function testLog($level, $data, $expected)
+    public function testLog($expected, $level, $format, ...$args)
     {
         $timezone = new \DateTimeZone('UTC');
-
         $expected = sprintf($expected, (new \DateTime('now', $timezone))->format('Y/m/d H:i:s'));
 
         $log = new StreamLog($this->stream, Log::ALL, $timezone);
@@ -60,7 +60,7 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
                 return yield strlen($string);
             }));
 
-        $coroutine = new Coroutine($log->log($level, $data));
+        $coroutine = new Coroutine($log->log($level, $format, ...$args));
         $this->assertTrue($coroutine->wait());
     }
 
@@ -75,35 +75,6 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
             ->method('write');
 
         $coroutine = new Coroutine($log->log(Log::DEBUG, 'Test log message'));
-        $this->assertTrue($coroutine->wait());
-    }
-
-    /**
-     * @depends testLog
-     * @dataProvider getExpected
-     *
-     * @param int $level
-     * @param string $data
-     * @param string $expected
-     */
-    public function testLogWithTimestamp($level, $data, $expected)
-    {
-        $timezone = new \DateTimeZone('UTC');
-
-        $date = new \DateTime('yesterday 15:34:28', $timezone);
-
-        $expected = sprintf($expected, $date->format('Y/m/d H:i:s'));
-
-        $log = new StreamLog($this->stream, Log::ALL, $timezone);
-
-        $this->stream->expects($this->once())
-            ->method('write')
-            ->will($this->returnCallback(function ($string) use ($expected) {
-                $this->assertSame($expected, $string);
-                return yield strlen($string);
-            }));
-
-        $coroutine = new Coroutine($log->log($level, $data, $date->getTimestamp()));
         $this->assertTrue($coroutine->wait());
     }
 }

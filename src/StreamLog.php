@@ -35,16 +35,12 @@ class StreamLog implements Log
     /**
      * {@inheritdoc}
      */
-    public function log(int $level, string $data, int $time = null): \Generator
+    public function log(int $level, string $format, ...$args): \Generator
     {
         $date = new \DateTimeImmutable('now', $this->timezone);
 
-        if (null !== $time) {
-            $date = $date->setTimestamp($time);
-        }
-
         if ($this->level & $level) {
-            yield from $this->stream->write($this->format($level, $data, $date));
+            yield from $this->stream->write($this->format($level, sprintf($format, ...$args), $date));
         }
 
         return true;
