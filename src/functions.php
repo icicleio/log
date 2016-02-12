@@ -30,16 +30,16 @@ if (!\function_exists(__NAMESPACE__ . '\log')) {
     function label($level)
     {
         switch ($level) {
-            case Log::DEBUG:     return 'debug';
-            case Log::INFO:      return 'info';
-            case Log::NOTICE:    return 'notice';
-            case Log::WARNING:   return 'warning';
-            case Log::ERROR:     return 'error';
-            case Log::CRITICAL:  return 'critical';
-            case Log::ALERT:     return 'alert';
-            case Log::EMERGENCY: return 'emergency';
+            case Log::DEBUG:     return 'Debug';
+            case Log::INFO:      return 'Info';
+            case Log::NOTICE:    return 'Notice';
+            case Log::WARNING:   return 'Warning';
+            case Log::ERROR:     return 'Error';
+            case Log::CRITICAL:  return 'Critical';
+            case Log::ALERT:     return 'Alert';
+            case Log::EMERGENCY: return 'Emergency';
 
-            default: return 'unknown';
+            default: return 'Unknown';
         }
     }
 }

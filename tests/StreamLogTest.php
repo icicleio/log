@@ -18,14 +18,14 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
     public function getExpected()
     {
         return [
-            [Log::DEBUG, 'Debug log data', '[debug (0x%x) @ %s] Debug log data'],
-            [Log::INFO, 'Info log data', '[info (0x%x) @ %s] Info log data'],
-            [Log::NOTICE, 'Notice log data', '[notice (0x%x) @ %s] Notice log data'],
-            [Log::WARNING, 'Warning log data', '[warning (0x%x) @ %s] Warning log data'],
-            [Log::ERROR, 'Error log data', '[error (0x%x) @ %s] Error log data'],
-            [Log::CRITICAL, 'Critical log data', '[critical (0x%x) @ %s] Critical log data'],
-            [Log::ALERT, 'Alert log data', '[alert (0x%x) @ %s] Alert log data'],
-            [Log::EMERGENCY, 'Emergency log data', '[emergency (0x%x) @ %s] Emergency log data'],
+            [Log::DEBUG, 'Debug log data', "[Debug @ %s] Debug log data\n"],
+            [Log::INFO, 'Info log data', "[Info @ %s] Info log data\n"],
+            [Log::NOTICE, 'Notice log data', "[Notice @ %s] Notice log data\n"],
+            [Log::WARNING, 'Warning log data', "[Warning @ %s] Warning log data\n"],
+            [Log::ERROR, 'Error log data', "[Error @ %s] Error log data\n"],
+            [Log::CRITICAL, 'Critical log data', "[Critical @ %s] Critical log data\n"],
+            [Log::ALERT, 'Alert log data', "[Alert @ %s] Alert log data\n"],
+            [Log::EMERGENCY, 'Emergency log data', "[Emergency @ %s] Emergency log data\n"],
         ];
     }
 
@@ -38,7 +38,7 @@ class StreamLogTest extends \PHPUnit_Framework_TestCase
      */
     public function testLog($level, $data, $expected)
     {
-        $expected = sprintf($expected, $level, gmdate('Y/m/d H:i:s'));
+        $expected = sprintf($expected, gmdate('Y/m/d H:i:s'));
 
         $log = new StreamLog($this->stream, Log::ALL);
 

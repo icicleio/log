@@ -5,14 +5,14 @@ use Icicle\Stream;
 
 class ConsoleLog extends StreamLog
 {
-    const BLACK  = 40;
-    const RED    = 41;
-    const GREEN  = 42;
-    const YELLOW = 43;
-    const BLUE   = 44;
-    const PURPLE = 45;
-    const CYAN   = 46;
-    const WHITE  = 47;
+    const BLACK  = 30;
+    const RED    = 31;
+    const GREEN  = 32;
+    const YELLOW = 33;
+    const BLUE   = 34;
+    const PURPLE = 35;
+    const CYAN   = 36;
+    const WHITE  = 37;
 
     /**
      * @param int $level
@@ -29,10 +29,9 @@ class ConsoleLog extends StreamLog
     protected function format($level, $data, \DateTimeImmutable $time)
     {
         return sprintf(
-            "\e[1;%dm[%s (0x%x) @ %s]\e[0m %s",
+            "\e[%dm[%s @ %s]\e[0m %s\n",
             $this->getColorValue($level),
             label($level),
-            $level,
             $time->format('Y/m/d H:i:s'),
             $data
         );

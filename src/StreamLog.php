@@ -70,6 +70,6 @@ class StreamLog implements Log
      */
     protected function format($level, $data, \DateTimeImmutable $time)
     {
-        return sprintf('[%s (0x%x) @ %s] %s', label($level), $level, $time->format('Y/m/d H:i:s'), $data);
+        return sprintf("[%s @ %s] %s\n", label($level), $time->format('Y/m/d H:i:s'), $data);
     }
 }
