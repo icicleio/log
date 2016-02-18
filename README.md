@@ -1,6 +1,6 @@
 # Asynchronous Log for Icicle
 
-This library is a component for [Icicle](https://github.com/icicleio/icicle), providing an asynchronous logging interface and implementation based on Icicle's [stream package](https://github.com/icicleio/stream). Like other Icicle components, this library uses [Coroutines](//github.com/icicleio/icicle/wiki/Coroutines) built from [Awaitables](https://github.com/icicleio/icicle/wiki/Awaitables) and [Generators](http://www.php.net/manual/en/language.generators.overview.php) to make writing asynchronous code more like writing synchronous code.
+This library is a component for [Icicle](https://github.com/icicleio/icicle), providing an asynchronous logging interface and implementation based on Icicle's [stream package](https://github.com/icicleio/stream). Like other Icicle components, this library uses [Coroutines](https://icicle.io/docs/manual/coroutines/) built from [Awaitables](https://icicle.io/docs/manual/awaitables/) and [Generators](http://www.php.net/manual/en/language.generators.overview.php) to make writing asynchronous code more like writing synchronous code.
 
 [![Build Status](https://img.shields.io/travis/icicleio/log/v1.x.svg?style=flat-square)](https://travis-ci.org/icicleio/log)
 [![Coverage Status](https://img.shields.io/coveralls/icicleio/log/v1.x.svg?style=flat-square)](https://coveralls.io/r/icicleio/log)
@@ -17,7 +17,7 @@ This library is a component for [Icicle](https://github.com/icicleio/icicle), pr
 ##### Requirements
 
 - PHP 5.5+ for v0.1.x branch (current stable) and v1.x branch (mirrors current stable)
-- PHP 7 for v2.0 branch (under development) supporting generator delegation and return expressions
+- PHP 7 for v2.0 (master) branch supporting generator delegation and return expressions
 
 ##### Installation
 
