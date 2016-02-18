@@ -8,6 +8,9 @@ use Icicle\Stream\WritableStream;
 
 class StreamLogTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \Icicle\Stream\WritableStream
+     */
     protected $stream;
 
     public function setUp()
