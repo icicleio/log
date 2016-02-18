@@ -41,24 +41,22 @@ class MultiLog implements Log
     /**
      * {@inheritdoc}
      */
-    public function log($level, $format /* , ...$args */)
+    public function log(int $level, string $format, ...$args): \Generator
     {
-        $args = func_get_args();
-
-        yield Awaitable\all(array_map(function (Log $log) use ($args) {
-            return new Coroutine(call_user_func_array([$log, 'log'], $args));
+        yield Awaitable\all(array_map(function (Log $log) use ($level, $format, $args): Coroutine {
+            return new Coroutine($log->log($level, $format, ...$args));
         }, $this->logs));
 
-        yield true;
+        return true;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         if (null === $this->level) {
-            $this->level = array_reduce($this->logs, function ($carry, Log $log) {
+            $this->level = array_reduce($this->logs, function (int $carry, Log $log): int {
                 return $carry | $log->getLevel();
             }, 0);
         }
